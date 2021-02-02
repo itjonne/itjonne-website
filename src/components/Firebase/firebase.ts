@@ -13,8 +13,6 @@ const config = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
-console.log(config);
-
 class Firebase {
   private database: firebase.database.Database;
   private auth: firebase.auth.Auth;
