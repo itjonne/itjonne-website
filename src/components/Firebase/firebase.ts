@@ -35,7 +35,7 @@ class Firebase {
   }
 
   getLoggedUser = () => {
-    return this.user;
+    return this.auth.currentUser;
   }
 
   // ============ Auth API ==============
@@ -52,7 +52,7 @@ class Firebase {
 
   // Sign out
   signOut = () => {
-    return this.auth.signOut;
+    return this.auth.signOut();
   }
 
   passwordReset = (email: string) => {
@@ -80,11 +80,9 @@ class Firebase {
   addImage = (data: string) => {
     if (this.auth.currentUser) {
       var newImageKey = firebase.database().ref("users/" + this.auth.currentUser.uid + "/images").push().key;
-      console.log(newImageKey);
       const location = `/users/${this.auth.currentUser.uid}/images/${newImageKey}`;
     
       try {
-        console.log("trying to push", data);
         firebase.database().ref(location).set(data);
       } catch (error) {
         console.log(error);
@@ -93,11 +91,9 @@ class Firebase {
     } else {
       console.log("Not logged in")
       var newImageKey = firebase.database().ref("users/" + this.admin + "/images").push().key;
-      console.log(newImageKey);
       const location = `/users/${this.admin}/images/${newImageKey}`;
     
       try {
-        console.log("trying to push", data);
         firebase.database().ref(location).set(data);
       } catch (error) {
         console.log(error);

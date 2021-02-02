@@ -13,9 +13,6 @@ const percentToHex = (p) => {
 export const DrawingComponent = (props) => {
   const [color, setColor] = useState("#000000");
   const [drawColor, setDrawColor] = useState("#000000");
-  const [saveData, setSaveData] = useState(null);
-  const [num, setNum] = useState(1);
-  const [justDrawn, setJustDrawn] = useState(false);
 
   const refCanvas = useRef(null);
   const firebase = useContext(FirebaseContext);
@@ -23,14 +20,11 @@ export const DrawingComponent = (props) => {
   const handleChangeComplete = (color) => {
     const alpha = parseFloat(color.rgb.a) * 100;
     const alphaInHex = percentToHex(alpha);
-    console.log(alpha);
-    console.log(alphaInHex);
     setColor(color.rgb);
     setDrawColor(color.hex + alphaInHex);
   };
 
   const handleSaveData = () => {
-    console.log(refCanvas.current.getSaveData());
     // Runtataan tätä kautta, meneee varmasti oikeeks stringiks nyt nopeesti.
     localStorage.setItem(
       "savedDrawing",
@@ -39,7 +33,6 @@ export const DrawingComponent = (props) => {
     
     firebase.addImage(localStorage.getItem("savedDrawing"));
     refCanvas.current.clear();
-    setSaveData(true);
   }
 
   return(
@@ -51,7 +44,7 @@ export const DrawingComponent = (props) => {
         <div className="tool">
           <button onClick={() => refCanvas.current.undo()}>Kumoa</button>
         </div>
-        <div className="tool">
+        <div className="tool center">
           <SketchPicker
             color={color}
             onChange={handleChangeComplete}        

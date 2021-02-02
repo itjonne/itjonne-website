@@ -6,7 +6,6 @@ export const Canvas = (props) => {
   const thisCanvas = useRef(null);
 
   useEffect(() => {
-    console.log("useeffect Canvas");
     thisCanvas.current.loadSaveData(props.data);
   },[])
 
@@ -19,7 +18,6 @@ export const Canvas = (props) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  console.log("rendering")
   return(
     <div className="canvas" onClick={(event) => handleMouseEnter()}>
       <CanvasDraw ref={thisCanvas} {...props} loadTimeOffset={randomInteger(10,50)}/>

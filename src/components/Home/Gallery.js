@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import CanvasDraw from 'react-canvas-draw';
 import { FirebaseContext } from '../Firebase';
 
 import { Canvas } from './Canvas';
@@ -7,14 +6,12 @@ import { Canvas } from './Canvas';
 export const Gallery = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [refs, setRefs] = useState([]);
 
   const firebase = useContext(FirebaseContext);
 
   useEffect(() => {
-    console.log("Getting images")
     const imagesRef = firebase.getImages();
-    imagesRef.on("value", (snapshot) => {
+    const unsubscribe = imagesRef.on("value", (snapshot) => {
       const data = snapshot.val();
       const keys = Object.keys(data);
       const found = [];
@@ -24,20 +21,23 @@ export const Gallery = () => {
       setImages(found);
       setIsLoading(false);
     })
-  }, []);
+    return () => unsubscribe;
+  
+  }, [firebase]);
 
   const thisCanvas = useRef(null);
   // Loaditems, setListener.
 
-  console.log(images);
-
   return(
     <div className="gallery">
-      {isLoading && <div className="loading"><p>Gallery loading...</p></div>
-        }
-      {images && images.map((image, i) => {
+      {isLoading && <div className="loading"><p>Ootappa hetki, galleria latautuu...</p></div>}
+      {
+      images 
+      ? images.map((image, i) => {
         return <Canvas key={i} data={image} canvasHeight={200} canvasWidth={200} disabled={true} />
-      })}
+        })
+      : <h1 className="center">Piirräpä kuva ni päästään alkuun!</h1>
+      }
     </div>
   )
 }

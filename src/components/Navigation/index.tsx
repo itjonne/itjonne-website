@@ -1,21 +1,22 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { ROUTES } from '../../constants/';
 import { FirebaseContext } from '../Firebase';
 
 const Navigation = () => {
   const firebase = useContext(FirebaseContext);
+  const history = useHistory();
 
   const handleSignOut = (event: React.MouseEvent<HTMLButtonElement>) => {
       firebase?.signOut();
+      history.push(ROUTES.SIGN_IN);
   } 
 
-  console.log("rendering navigation")
   return(
     <div className="header">
         <Link className="header-link" to={ROUTES.HOME}>://itjonne</Link>
-        {firebase && firebase.getLoggedUser() && <button onClick={handleSignOut}>Kirjaudu ulos</button> }
+        <button onClick={handleSignOut}>Kirjaudu ulos</button>
     </div>
   )
 };

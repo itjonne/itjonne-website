@@ -34,7 +34,6 @@ const SignIn = () => {
       .then((user) => {
         firebase.setLoggedUser(user); // Tää menee suoraan contextiin, pitäis renderöidä kaikki?!
         setUser({ ...INITIAL_STATE });
-        console.log("Signed in as:", user);
         history.push(ROUTES.HOME);
       })
       .catch(error => {
@@ -53,8 +52,9 @@ const SignIn = () => {
     <div className="signin">
       <h1>Kirjaudu Sisään:</h1>
       <form onSubmit={onSubmit}>
+        <p>admin@admin.com / password</p>
         <input onChange={onChange} name="email" value={email} type="email" placeholder="Sähköposti (admin@admin.com)" />
-        <input onChange={onChange} name="password" value={password} type="password" placeholder="salasana (admin)" />
+        <input onChange={onChange} name="password" value={password} type="password" placeholder="Salasana (password)" />
         {error && <p className="error">{error}</p>}
         <button type="submit">Kirjaudu Sisään</button>
       </form>
