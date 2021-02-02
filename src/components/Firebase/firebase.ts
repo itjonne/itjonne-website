@@ -92,6 +92,16 @@ class Firebase {
     
     } else {
       console.log("Not logged in")
+      var newImageKey = firebase.database().ref("users/" + this.admin + "/images").push().key;
+      console.log(newImageKey);
+      const location = `/users/${this.admin}/images/${newImageKey}`;
+    
+      try {
+        console.log("trying to push", data);
+        firebase.database().ref(location).set(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
 
