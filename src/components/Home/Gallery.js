@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { FirebaseContext } from '../Firebase';
 
 import { Canvas } from './Canvas';
@@ -11,22 +11,25 @@ export const Gallery = () => {
 
   useEffect(() => {
     const imagesRef = firebase.getImages();
-    const unsubscribe = imagesRef.on("value", (snapshot) => {
-      const data = snapshot.val();
-      const keys = Object.keys(data);
-      const found = [];
-      for (let key of keys) {
-        found.push(data[key]);
-      }
-      setImages(found);
-      setIsLoading(false);
-    })
-    return () => unsubscribe;
-  
+    if (firebase.getLoggedUser()) {
+      const unsubscribe = imagesRef.on("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const keys = Object.keys(data);
+          const found = [];
+          for (let key of keys) {
+            found.push({id: key, ...data[key]});
+          }
+          setImages(found);
+          setIsLoading(false);
+        } else {
+          setImages([]);
+          setIsLoading(false);
+        }
+      })
+      return () => unsubscribe;
+    }
   }, [firebase]);
-
-  const thisCanvas = useRef(null);
-  // Loaditems, setListener.
 
   return(
     <div className="gallery">

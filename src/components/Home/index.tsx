@@ -16,13 +16,22 @@ const Home = () => {
     }
   },[firebase, history]);
 
+  const handleSignOut = (event: React.MouseEvent<HTMLButtonElement>) => {
+    firebase?.signOut();
+    history.push(ROUTES.SIGN_IN);
+} 
+
   return(
     <div className="home">
+      <div className="logout">
+        <button onClick={handleSignOut}>Log Out</button>
+      </div>
       <h1 className="center">Tervetuloa, piirrä tähän jotain!</h1>
       <DrawingComponent lazyRadius={0} hideGrid={true} brushRadius={5} />
       <h1 className="center">Galleria:</h1>
       <Gallery />
       <p className="center">Klikkaamalla näkee animaation.</p>
+      
     </div>
   )
 };
